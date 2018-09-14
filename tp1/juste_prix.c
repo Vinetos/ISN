@@ -7,12 +7,12 @@
 #define MIN  1
 #define E_AIGU 130
 
-int main()
-{
+int main() {
     // Gestion de l'aléatoire
     srand((unsigned int) time(NULL));
-    // Entrée de l'utilisateur, prix aléatoire entre MAX et MIN
-    int input, price = (unsigned int) (rand() % (MAX - MIN) + MIN);
+    
+    int input;// Entrée de l'utilisateur
+    unsigned int price = (unsigned int) (rand() % (MAX - MIN) + MIN); // Prix aléatoire entre MAX et MIN
 
     while (42) // Boucle infinie
     {
