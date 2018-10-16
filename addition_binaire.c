@@ -19,8 +19,11 @@ int nombre_de_chiffres(int chiffres);
  */
 void nombre_en_tableau(int nombre, int tableau[], int taille);
 
+int addition(int b1, int b2);
+
 int main() {
-    int nombreBinaire1, nombreBinaire2;
+    while (42) {
+        int nombreBinaire1, nombreBinaire2;
     printf("Entrer un nombre binaire : ");
     scanf("%d", &nombreBinaire1);
 
@@ -33,22 +36,31 @@ int main() {
         nombre_chiffres = nombre_de_chiffres(nombreBinaire2);
     }
 
-    int tableau1[nombre_chiffres], tableau2[nombre_chiffres], total[nombre_chiffres];
+    int tableau1[nombre_chiffres], tableau2[nombre_chiffres], total[nombre_chiffres+1];
     // On remplit les tableaux correpsondant aux nombres binaires
     nombre_en_tableau(nombreBinaire1, tableau1, nombre_chiffres);
     nombre_en_tableau(nombreBinaire2, tableau2, nombre_chiffres);
 
-    // Addition des deux nombres
     int retenue = 0;
     for (int indice = 0; indice < nombre_chiffres; indice++) {
         int chiffre_1 = tableau1[indice];
         int chiffre_2 = tableau2[indice];
-
-        if (chiffre_1 == 1) {
-
+        int somme = chiffre_1 + chiffre_2 + retenue;
+        if(somme > 1) {
+            retenue = 1;
+            total[indice] = (somme == 3) ? 1 : 0;
+        } else {
+            retenue = 0;
+            total[indice] = somme;
         }
     }
+    total[nombre_chiffres] = retenue;
 
+    for (int indice = nombre_chiffres; indice > 0; indice--) {
+        printf("%d", total[indice]);
+    }
+    printf("\n");
+    }
     return EXIT_SUCCESS;
 }
 
@@ -75,4 +87,8 @@ void nombre_en_tableau(int nombre, int tableau[], int taille) {
         nombre /= 10;
         indice++;
     }
+}
+
+int addition(int b1, int b2) {
+    return 0;
 }
