@@ -11,17 +11,19 @@
 int countDigits(int number);
 
 /**
+ * Alloue la mémoire nécessaire pour un tableau d'entiers
+ * @param length la taille du tableau
+ * @return le tableau
+ */
+void *intArray(int length);
+
+/**
  * Transforme un nombre en tableau
  *
  * @param number  le nombre à transformer
  * @param array    le tableau à remplir
  */
 void intToArray(int number, int array[]);
-
-void *array(int size) {
-    // Permet d'allouer un la mémoire pour x fois la taille d'un int (= tableau de int)
-    return malloc(size * sizeof(int));
-}
 
 int main() {
     // Entrés utilisateurs
@@ -38,9 +40,9 @@ int main() {
         bitCount = countDigits(binaryNumber2);
 
     // Pointeurs qui serviront de tableaux
-    int *binaryNumberArray1 = array(bitCount);
-    int *binaryNumberArray2 = array(bitCount);
-    int *total = array(bitCount + 1); // +1 parce qu'il peut avoir une retenue donc un bit de plus
+    int *binaryNumberArray1 = intArray(bitCount);
+    int *binaryNumberArray2 = intArray(bitCount);
+    int *total = intArray(bitCount + 1); // +1 parce qu'il peut avoir une retenue donc un bit de plus
 
     // On remplit les tableaux correpsondant aux nombres binaires
     intToArray(binaryNumber1, binaryNumberArray1);
@@ -91,6 +93,10 @@ int countDigits(int number) {
     return size;
 }
 
+void *intArray(int length) {
+    // Permet d'allouer un la mémoire pour x fois la taille d'un int (= tableau de int)
+    return malloc(length * sizeof(int));
+}
 
 void intToArray(int number, int array[]) {
     int index = 0;
