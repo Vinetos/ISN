@@ -4,91 +4,105 @@
 /**
  * Renvoie le nombre de chiffres qui composent le nombre
  *
- * @param chiffres le nombre
+ * @param number le nombre
  *
  * @return le nombre de chiffres
  */
-int nombre_de_chiffres(int chiffres);
+int countDigits(int number);
 
 /**
  * Transforme un nombre en tableau
  *
- * @param nombre  le nombre à transformer
- * @param tableau le tableau à remplir
- * @param taille  La taille du chiffre
+ * @param number  le nombre à transformer
+ * @param array    le tableau à remplir
  */
-void nombre_en_tableau(int nombre, int tableau[], int taille);
+void intToArray(int number, int array[]);
 
-int addition(int b1, int b2);
+void *array(int size) {
+    // Permet d'allouer un la mémoire pour x fois la taille d'un int (= tableau de int)
+    return malloc(size * sizeof(int));
+}
 
 int main() {
-    while (42) {
-        int nombreBinaire1, nombreBinaire2;
+    // Entrés utilisateurs
+    int binaryNumber1, binaryNumber2;
+    printf("Addition de deux nombres binaires (bit de poids faible le plus a droite) \n");
     printf("Entrer un nombre binaire : ");
-    scanf("%d", &nombreBinaire1);
-
+    scanf_s("%d", &binaryNumber1);
     printf("Entrer second nombre binaire : ");
-    scanf("%d", &nombreBinaire2);
+    scanf_s("%d", &binaryNumber2);
 
-    // On prend le plus grand nombre de chiffres pour calculer
-    int nombre_chiffres = nombre_de_chiffres(nombreBinaire1);
-    if (nombre_chiffres < nombre_de_chiffres(nombreBinaire2)) {
-        nombre_chiffres = nombre_de_chiffres(nombreBinaire2);
-    }
+    // On compte le nombre de bits et on prend le nombre le plus grand
+    int bitCount = countDigits(binaryNumber1);
+    if (bitCount < countDigits(binaryNumber2))
+        bitCount = countDigits(binaryNumber2);
 
-    int tableau1[nombre_chiffres], tableau2[nombre_chiffres], total[nombre_chiffres+1];
+    // Pointeurs qui serviront de tableaux
+    int *binaryNumberArray1 = array(bitCount);
+    int *binaryNumberArray2 = array(bitCount);
+    int *total = array(bitCount + 1); // +1 parce qu'il peut avoir une retenue donc un bit de plus
+
     // On remplit les tableaux correpsondant aux nombres binaires
-    nombre_en_tableau(nombreBinaire1, tableau1, nombre_chiffres);
-    nombre_en_tableau(nombreBinaire2, tableau2, nombre_chiffres);
+    intToArray(binaryNumber1, binaryNumberArray1);
+    intToArray(binaryNumber2, binaryNumberArray2);
 
-    int retenue = 0;
-    for (int indice = 0; indice < nombre_chiffres; indice++) {
-        int chiffre_1 = tableau1[indice];
-        int chiffre_2 = tableau2[indice];
-        int somme = chiffre_1 + chiffre_2 + retenue;
-        if(somme > 1) {
-            retenue = 1;
-            total[indice] = (somme == 3) ? 1 : 0;
+    // On fait l'addition des nombres binaires
+    int carry = 0;
+    for (int index = 0; index < bitCount; index++) {
+        int digits1 = binaryNumberArray1[index];
+        int digits2 = binaryNumberArray2[index];
+        int sum = digits1 + digits2 + carry;
+
+        if (sum > 1) {// On a soit 1 + 1 soit 1 + 1 + 1 (retenue)
+            carry = 1; // On crée une retenue pour l'addiction suivante
+            total[index] = (sum == 3) ? 1 : 0; // Si la somme vaut trois, on place un 1 sinon 0
         } else {
-            retenue = 0;
-            total[indice] = somme;
+            carry = 0; // La somme vaut 0 ou 1 donc par de retenue
+            total[index] = sum;
         }
     }
-    total[nombre_chiffres] = retenue;
+    // On ajoute la retenue finale
+    total[bitCount] = carry;
 
-    for (int indice = nombre_chiffres; indice > 0; indice--) {
-        printf("%d", total[indice]);
-    }
-    printf("\n");
-    }
+    // On affiche le tableau (remplit à l'envers)
+    printf("Resultat: ");
+    for (int index = bitCount; index >= 0; index--)
+        printf("%d", total[index]);
+
+    // On libère la mémoire
+    free(binaryNumberArray1);
+    free(binaryNumberArray2);
+    free(total);
+
     return EXIT_SUCCESS;
 }
 
-int nombre_de_chiffres(int chiffre) {
-    if (chiffre == 0)
+int countDigits(int number) {
+    // On gère le cas où le nombre vaut 0
+    if (number == 0)
         return 1;
-    int taille = 0;
-    while (chiffre > 0) {
-        chiffre /= 10;
-        taille++;
+    // On compte le nombre de bits
+    int size = 0;
+    while (number > 0) {
+        // Le nombre est considérer en base 10 par l'ordinateur
+        number /= 10;
+        size++;
     }
-    return taille;
+    return size;
 }
 
 
-void nombre_en_tableau(int nombre, int tableau[], int taille) {
-    int indice = 0;
-    if(nombre == 0) {
-        tableau[indice] = 0;
+void intToArray(int number, int array[]) {
+    int index = 0;
+    // On gère le cas où le nombre vaut 0
+    if (number == 0) {
+        array[index] = 0;
         return;
     }
-    while(nombre > 0) {
-        tableau[indice] = nombre%10;
-        nombre /= 10;
-        indice++;
+    while (number > 0) {
+        // Le nombre est considérer en base 10 par l'ordinateur
+        array[index] = number % 10;
+        number /= 10;
+        index++;
     }
-}
-
-int addition(int b1, int b2) {
-    return 0;
 }
