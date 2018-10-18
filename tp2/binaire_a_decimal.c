@@ -1,29 +1,28 @@
 #include <stdio.h>
 #include <math.h>
 
-// Convertit un nombre decimal en binaire
-long long convertDecimalToBinary(int n);
+// Convertit un nombre binaire en decimal
+int convertBinaryToDecimal(long long n);
 
 int main() {
-    int number;
-    printf("Donnez un nombre : ");
-    scanf_s("%d", &number);
-    printf("Le nombre en binaire est %lld", convertDecimalToBinary(number));
+    long long number;
+    printf("Donnez un nombre binnaire: ");
+    scanf_s("%lld", &number);
+    printf("Le nombre est %d", convertBinaryToDecimal(number));
     return 0;
 }
 /**
- * Convertit un nombre decimal en binaire
- * @param number le nombre decimal
- * @return la valeur en binaire
+ * Convertit un nombre binaire en decimal
+ * @param number le nombre binaire
+ * @return la valeur en decimal
  */
-long long convertDecimalToBinary(int number) {
-    long long binary = 0;
-    int column_of_digit = 1;
+int convertBinaryToDecimal(long long number) {
+    int decimalNumber = 0, power = 0;
     while (number != 0) {
-        int remainder = number % 2;
-        number /= 2;
-        binary += remainder * column_of_digit;
-        column_of_digit *= 10;
+        int remainder = number % 10;
+        number /= 10;
+        decimalNumber += remainder * pow(2, power);
+        ++power;
     }
-    return binary;
+    return decimalNumber;
 }
